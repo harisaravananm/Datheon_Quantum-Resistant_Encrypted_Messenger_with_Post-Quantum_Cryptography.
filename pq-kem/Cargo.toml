@@ -1,0 +1,17 @@
+[package]
+name = "pq-kem"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ml-kem = { version = "0.2", features = ["deterministic"] }
+rand = "0.8"
+hex = "0.4"
+aes-gcm = "0.10"
+hkdf = "0.12"
+hmac = "0.12"
+sha2 = "0.10"
+
+[dev-dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

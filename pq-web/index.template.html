@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PQ Messenger</title>
+<style>
+:root{--bg:#0f1419;--panel:#171e26;--line:#26303b;--fg:#e6edf3;--mut:#8b98a5;--acc:#3fb6a8;--out:#1f4d49;--in:#252f3a;--bad:#5a2327}
+@media (prefers-color-scheme:light){:root{--bg:#f4f6f8;--panel:#fff;--line:#d8dee4;--fg:#1c2128;--mut:#59636e;--acc:#0b7a6f;--out:#d3efeb;--in:#e9edf1;--bad:#fbd9db}}
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,Segoe UI,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line)}
+h1{font-size:16px;margin:0}h2{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin:0 0 8px}
+.badge{color:var(--acc);border:1px solid var(--acc);border-radius:99px;padding:2px 10px;font-size:12px}
+#login{max-width:380px;margin:12vh auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px}
+input,button{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+#login input{width:100%;margin:4px 0 12px}button{cursor:pointer}button.pri{background:var(--acc);color:#fff;border-color:var(--acc)}
+#err{color:#e5534b;min-height:1.2em}
+#app{display:grid;grid-template-columns:200px 1fr 380px;gap:12px;padding:12px;height:calc(100vh - 54px)}
+.col{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;min-height:0;display:flex;flex-direction:column;gap:10px;overflow:auto}
+.row{display:flex;gap:6px}.row input{flex:1;min-width:0}
+.peer{display:block;width:100%;text-align:left;margin-bottom:4px}.peer.on{border-color:var(--acc)}
+#msgs{flex:1;overflow:auto;display:flex;flex-direction:column;gap:6px}
+.bubble{max-width:75%;padding:7px 11px;border-radius:12px;cursor:pointer;word-break:break-word}
+.bubble.out{align-self:flex-end;background:var(--out)}.bubble.in{align-self:flex-start;background:var(--in)}.bubble.bad{background:var(--bad)}
+.kv{display:flex;gap:8px;padding:2px 0;border-bottom:1px dashed var(--line)}.k{color:var(--mut);min-width:118px}.v{font-family:ui-monospace,Consolas,monospace;font-size:12px;word-break:break-all}
+#wire{font-family:ui-monospace,Consolas,monospace;font-size:11px;max-height:190px;overflow:auto}.w{padding:2px 0;word-break:break-all;color:var(--mut)}.w.out{color:var(--fg)}
+.note{font-size:12px;color:var(--mut)}
+@media(max-width:900px){#app{grid-template-columns:1fr;height:auto}}
+</style></head><body>
+<header><h1>PQ Messenger <span class="badge">ML-KEM-768 + AES-256-GCM</span></h1><span id="status" class="note">not connected</span></header>
+<div id="login"><h2>Connect</h2>
+<label>Username<input id="user" value="alice" maxlength="32"></label>
+<label>Relay URL<input id="url" value="ws://127.0.0.1:9001"></label>
+<button id="connect" class="pri">Connect</button><div id="err"></div>
+<p class="note">Open this page in two tabs with different usernames, then start a chat from one to the other. Messages are encrypted in the browser; the relay only sees ciphertext.</p></div>
+<div id="app" hidden>
+ <div class="col"><h2>Chats</h2><div class="row"><input id="peerName" placeholder="peer username"><button id="start">Start</button></div><div id="peers"></div></div>
+ <div class="col"><h2 id="chatTitle"></h2><div id="msgs"></div>
+  <div class="row"><input id="text" placeholder="Type a message"><button id="send" class="pri">Send</button><button id="tamper" title="Corrupt one bit in transit to show MAC rejection">Send tampered</button></div></div>
+ <div class="col">
+  <div><h2>Session &amp; verification</h2><div id="session"></div><p class="note">Compare the safety number with your peer over another channel. A relay that swapped public keys would make the numbers differ.</p></div>
+  <div><h2>Selected message (click a bubble)</h2><div id="meta"><span class="note">No message selected.</span></div></div>
+  <div><h2>Quantum security</h2>
+   <div class="kv"><span class="k">key exchange</span><span class="v">ML-KEM-768, NIST Category 3 (lattice, resists Shor)</span></div>
+   <div class="kv"><span class="k">symmetric</span><span class="v">AES-256-GCM (Grover leaves ~128-bit security)</span></div>
+   <div class="kv"><span class="k">KDF</span><span class="v">HKDF-SHA256 root, HMAC-SHA256 chain</span></div></div>
+  <div><h2>What the relay sees</h2><div id="wire"></div></div>
+ </div></div>
+<script>/*BUNDLE*/</script></body></html>
