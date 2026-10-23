@@ -280,5 +280,3 @@ Ten threats with residual risks: [`ARCHITECTURE.md`](pq-web/docs/ARCHITECTURE.md
 ## 📄 License
 
 [MIT](LICENSE)
-
-
